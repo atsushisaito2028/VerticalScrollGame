@@ -690,6 +690,17 @@ h4 {
   overflow-wrap: anywhere;
 }
 
+.footer-links {
+  display: grid;
+  gap: 8px;
+  justify-items: end;
+  text-align: right;
+}
+
+.footer-links a + a {
+  font-size: clamp(16px, 2.2vw, 24px);
+}
+
 .rulebook-page {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(247, 251, 255, 0.96)),
@@ -914,6 +925,11 @@ h4 {
   .footer {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .footer-links {
+    justify-items: start;
+    text-align: left;
   }
 }
 
