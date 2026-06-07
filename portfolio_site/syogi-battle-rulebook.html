@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>異世界将棋道場 | Rulebook</title>
+    <meta name="description" content="異世界将棋道場の簡易ルールブック。将棋の移動、HP、デッキ、配置テンプレート、スキル、ダメージ処理をまとめています。" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="rulebook-page">
+    <header class="site-header">
+      <a class="brand" href="./index.html#projects" aria-label="Back to portfolio">
+        <span class="brand-mark">将</span>
+        <span>異世界将棋道場</span>
+      </a>
+      <nav class="nav-links" aria-label="Rulebook navigation">
+        <a href="#overview">概要</a>
+        <a href="#turn">ターン</a>
+        <a href="#damage">ダメージ</a>
+        <a href="#deck">デッキ</a>
+        <a href="#skills">スキル</a>
+      </nav>
+    </header>
+
+    <main class="rulebook-main">
+      <section class="rulebook-hero" id="overview">
+        <p class="eyebrow">Simple Rulebook</p>
+        <h1>異世界将棋道場 簡易ルールブック</h1>
+        <p class="rulebook-lead">
+          将棋の初期配置と駒移動を土台に、HP、デッキ構築、配置テンプレート、駒ごとのスキルを組み合わせた1対1のスキルバトルゲームです。
+          相手のHPを0にすることを目指します。
+        </p>
+        <div class="project-actions">
+          <a class="button primary" href="./assets/video/syogi-battle-demo.mp4" target="_blank" rel="noopener">実機映像を見る</a>
+          <a class="button secondary" href="./index.html#projects">ポートフォリオへ戻る</a>
+        </div>
+      </section>
+
+      <section class="rulebook-section">
+        <h2>1. 基本ルール</h2>
+        <ul>
+          <li>盤面は9x9で、駒の初期位置と基本移動は将棋に準じます。</li>
+          <li>王はリーダー駒です。現在のリーダーはプレイヤー、NPCともに覇王です。</li>
+          <li>双方のHPは800から開始します。相手HPを0にすると勝利です。</li>
+          <li>駒を選ぶと、移動可能マス、スキル内容、残り使用回数、状態異常を確認できます。</li>
+          <li>相手の駒や持ち駒を選んだ場合も、駒の効果を確認できます。</li>
+        </ul>
+      </section>
+
+      <section class="rulebook-section" id="turn">
+        <h2>2. ターンの流れ</h2>
+        <ol>
+          <li>自分のターンになったら、盤面の駒または持ち駒を選びます。</li>
+          <li>移動、打つ、スキル使用、成りの判断を行います。</li>
+          <li>1ターンにスキルを使える駒は1体までです。</li>
+          <li>ターン終了時に、覇王のリーダースキルや青炎などの継続ダメージを処理します。</li>
+          <li>処理後、相手のターンへ移ります。</li>
+        </ol>
+      </section>
+
+      <section class="rulebook-section" id="damage">
+        <h2>3. ダメージ処理</h2>
+        <table class="rulebook-table">
+          <thead>
+            <tr><th>種類</th><th>タイミング</th><th>表示色</th><th>内容</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>捕獲ダメージ</td><td>駒を取った瞬間</td><td>赤</td><td>取った駒の種類やスティール効果に応じて相手HPを削ります。</td></tr>
+            <tr><td>覇王ダメージ</td><td>覇王をリーダーにしている側のターン終了時</td><td>黄</td><td>初めて駒を獲得した後、自分の盤上の駒数に応じた永続ダメージを与えます。</td></tr>
+            <tr><td>青炎ダメージ</td><td>ターン終了時</td><td>青</td><td>ドラゴンのスキルで生成された青炎マス上の敵駒数に応じてダメージを与えます。</td></tr>
+            <tr><td>汎用スキルダメージ</td><td>スキル解決時</td><td>橙</td><td>ゴブリンやアーチャーなど、駒ごとの直接ダメージです。</td></tr>
+          </tbody>
+        </table>
+        <p>
+          駒を取った瞬間のダメージと、ターン終了時の継続ダメージは別々に処理します。
+          何の効果でHPが減ったか分かるよう、HPバー上のダメージ表示も色分けしています。
+        </p>
+      </section>
+
+      <section class="rulebook-section" id="deck">
+        <h2>4. デッキ編成と配置テンプレート</h2>
+        <h3>デッキ編成</h3>
+        <ul>
+          <li>デッキは19枚で構成します。</li>
+          <li>1コストは9枚、2コストは4枚、3コストは4枚、4コストは2枚、王は1枚です。</li>
+          <li>同じ将棋駒の枠でも、ゴブリン、アーチャー、スライムのように別キャラクターを採用できます。</li>
+        </ul>
+        <h3>配置テンプレート</h3>
+        <ul>
+          <li>将棋の初期配置枠の中で、同じ駒種のキャラクターだけを入れ替えられます。</li>
+          <li>歩は歩列、香は香の位置、角は角の位置の中でのみ変更できます。</li>
+          <li>テンプレートを選んでバトルを開始すると、その配置が初期盤面に反映されます。</li>
+        </ul>
+      </section>
+
+      <section class="rulebook-section" id="skills">
+        <h2>5. スキル種別</h2>
+        <table class="rulebook-table">
+          <thead>
+            <tr><th>種別</th><th>説明</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>アクティブスキル</td><td>自分のターンに選んで使う効果です。使用回数があり、1ターンにスキルを使える駒は1体までです。</td></tr>
+            <tr><td>スティールスキル</td><td>指定条件で駒を取った時などに発動する、捕獲まわりの強化効果です。</td></tr>
+            <tr><td>パッシブスキル</td><td>条件を満たすと自動的に働く効果です。覇王のリーダースキルもこの考え方で処理します。</td></tr>
+          </tbody>
+        </table>
+        <h3>代表的な効果</h3>
+        <ul>
+          <li>ドラゴン: 青炎マスを生成し、ターン終了時に継続ダメージを与えます。</li>
+          <li>賢者: 斜めライン上の敵の動きを止める石化を付与します。</li>
+          <li>トリックスター: 隣接する敵駒2体の位置を入れ替えます。</li>
+          <li>ランサー: 直線上の先頭の敵駒を押し返します。</li>
+        </ul>
+      </section>
+
+      <section class="rulebook-section">
+        <h2>6. 成り、持ち駒、勝利条件</h2>
+        <ul>
+          <li>将棋と同じく、条件を満たした駒は成れます。成った駒は進化後イラストに変わります。</li>
+          <li>取った駒は持ち駒になり、盤面に打てます。残りスキル回数も保持されます。</li>
+          <li>移動先には、駒を取った場合のダメージ予測が表示されます。</li>
+          <li>相手HPを0にすると勝利し、リザルト画面ではMVP駒が表示されます。</li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>

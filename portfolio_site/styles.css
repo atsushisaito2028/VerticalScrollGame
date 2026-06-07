@@ -362,6 +362,11 @@ h4 {
   grid-template-columns: 74px minmax(0, 1fr);
 }
 
+.project-card-showcase {
+  grid-template-columns: 74px minmax(0, 1fr);
+  padding-bottom: clamp(26px, 4vw, 46px);
+}
+
 .project-index {
   color: rgba(17, 24, 39, 0.18);
   font-size: 42px;
@@ -469,6 +474,7 @@ h4 {
 .project-video video {
   display: block;
   width: 100%;
+  aspect-ratio: 16 / 9;
   max-height: 440px;
   background: #101827;
 }
@@ -498,6 +504,88 @@ h4 {
   margin-bottom: 0;
   font-size: 14px;
   line-height: 1.72;
+}
+
+.showcase-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.86fr) minmax(360px, 1.14fr);
+  gap: clamp(20px, 3vw, 34px);
+  align-items: start;
+}
+
+.showcase-copy {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.showcase-copy p {
+  margin-bottom: 0;
+}
+
+.showcase-actions {
+  margin-top: 22px;
+}
+
+.showcase-video {
+  margin: 0;
+}
+
+.syogi-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 22px 0 0;
+}
+
+.syogi-summary div {
+  min-height: 100%;
+  padding: 16px;
+  background: rgba(247, 251, 255, 0.92);
+  border: 1px solid rgba(17, 24, 39, 0.11);
+  border-radius: 8px;
+}
+
+.syogi-summary span {
+  display: inline-flex;
+  margin-bottom: 12px;
+  color: var(--cyan);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.syogi-summary strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #111827;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.syogi-summary p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.rulebook-preview {
+  margin-top: 14px;
+  padding: 18px;
+  background:
+    linear-gradient(135deg, rgba(0, 166, 214, 0.12), transparent 60%),
+    rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(0, 166, 214, 0.22);
+  border-radius: 8px;
+}
+
+.rulebook-preview h4 {
+  margin-bottom: 8px;
+}
+
+.rulebook-preview p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.75;
 }
 
 .mini-visual {
@@ -860,6 +948,14 @@ h4 {
     overflow: hidden;
   }
 
+  .showcase-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .syogi-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .project-index {
     font-size: 32px;
   }
@@ -931,6 +1027,10 @@ h4 {
   }
 
   .deep-dive {
+    grid-template-columns: 1fr;
+  }
+
+  .syogi-summary {
     grid-template-columns: 1fr;
   }
 

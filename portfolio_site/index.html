@@ -206,9 +206,6 @@
             </ul>
             <a class="text-link" href="./assets/j222145.pdf">卒業論文PDFを見る</a>
           </div>
-          <div class="mini-visual eeg-visual" aria-hidden="true">
-            <span></span><span></span><span></span>
-          </div>
         </article>
 
         <article class="project-card project-card-large">
@@ -319,54 +316,58 @@
           </div>
         </article>
 
-        <article class="project-card">
+        <article class="project-card project-card-showcase">
           <div class="project-index">04</div>
           <div class="project-body">
-            <p class="project-kicker">Unity / C# / Game Design</p>
-            <h3>異世界将棋道場: 将棋ルールを土台にしたスキルバトルゲーム</h3>
-            <p>
-              Unity 6とC#で、将棋の駒配置・移動ルールをベースに、HP、デッキ構築、スキル、リーダーパッシブを組み合わせた対局ゲームを制作しました。
-              「将棋として違和感なく動くこと」と「ゲームとして見ていて楽しいこと」の両方を大事にし、駒を取るダメージ、ターン終了時の覇王ダメージ、青炎や毒などの継続ダメージを分けて実装しています。
-            </p>
-            <div class="deep-dive">
-              <div>
-                <h4>将棋ルールと独自バトルの両立</h4>
+            <div class="showcase-layout">
+              <div class="showcase-copy">
+                <p class="project-kicker">Unity / C# / Game Design</p>
+                <h3>異世界将棋道場: 将棋ルールを土台にしたスキルバトルゲーム</h3>
                 <p>
-                  歩、香、桂、銀、金、角、飛、王の初期配置と移動を将棋に合わせたうえで、駒ごとにアクティブスキル、スティールスキル、パッシブスキルを設定しました。
-                  成り、持ち駒、捕獲、打つ処理も入れ、通常の将棋らしい操作感を残しながらHP制バトルとして成立するよう調整しました。
+                  Unity 6とC#で、将棋の駒配置・移動ルールをベースに、HP、デッキ構築、スキル、リーダーパッシブを組み合わせた対局ゲームを制作しました。
+                  将棋として違和感なく動くことと、スキルバトルとして見ていて楽しいことの両方を大事にしています。
                 </p>
+                <div class="project-actions showcase-actions">
+                  <a class="button primary" href="./assets/video/syogi-battle-demo.mp4" target="_blank" rel="noopener">実機映像を見る</a>
+                  <a class="button secondary" href="./syogi-battle-rulebook.html" target="_blank" rel="noopener">ルールブックを見る</a>
+                  <a class="button secondary" href="https://github.com/atsushisaito2028/syogibattle" target="_blank" rel="noopener">GitHubを見る</a>
+                </div>
               </div>
-              <div>
-                <h4>デッキと配置テンプレート</h4>
-                <p>
-                  どの駒を何枚入れるかを決めるデッキ編成と、将棋の初期配置枠の中で同種駒を入れ替えるテンプレート作成を実装しました。
-                  1コストのゴブリン、アーチャー、スライムのように同じ歩の枠でも役割が違うため、カード情報と配置情報がずれないよう保存・復元の対応にも取り組みました。
-                </p>
-              </div>
-              <div>
-                <h4>UIとフィードバック</h4>
-                <p>
-                  選択中の駒の効果、残りスキル回数、持ち駒、ダメージ予測、ターン状態を一画面で確認できるようにしました。
-                  HPバーには捕獲ダメージ、覇王ダメージ、青炎ダメージなどを色分け表示し、駒を取った時に持ち駒欄へ飛んでいく演出、斬撃、石化、毒、青炎などのエフェクトも追加しています。
-                </p>
-              </div>
-              <div>
-                <h4>制作で頑張った点</h4>
-                <p>
-                  途中で仕様を何度も見直しながら、強すぎる効果の調整、NPCの行動改善、ターン終了処理の整理、設定画面、BGM/SE/スキルボイス、タイトル・リザルト画面まで作り込みました。
-                  特に、駒を取った瞬間の処理とターン終了時の処理を分け、プレイヤーが「何でダメージを受けたか」を追えるようにした点を重視しました。
-                </p>
+              <div class="project-video showcase-video">
+                <video controls preload="metadata">
+                  <source src="./assets/video/syogi-battle-demo.mp4" type="video/mp4" />
+                  お使いのブラウザでは動画を再生できません。
+                </video>
               </div>
             </div>
-            <div class="project-video">
-              <video controls preload="metadata">
-                <source src="./assets/video/syogi-battle-demo.mp4" type="video/mp4" />
-                お使いのブラウザでは動画を再生できません。
-              </video>
+            <div class="syogi-summary">
+              <div>
+                <span>01</span>
+                <strong>将棋ルールと独自バトルの両立</strong>
+                <p>歩、香、桂、銀、金、角、飛、王の初期配置と移動を将棋に合わせ、成り、持ち駒、捕獲、打つ処理まで実装しました。</p>
+              </div>
+              <div>
+                <span>02</span>
+                <strong>デッキと配置テンプレート</strong>
+                <p>同じ歩枠でもゴブリン、アーチャー、スライムを使い分けられるよう、デッキ情報と初期配置テンプレートを連動させました。</p>
+              </div>
+              <div>
+                <span>03</span>
+                <strong>UIとフィードバック</strong>
+                <p>駒効果、残りスキル回数、持ち駒、ダメージ予測、ターン状態を一画面で確認できるように整理しました。</p>
+              </div>
+              <div>
+                <span>04</span>
+                <strong>演出とダメージの見える化</strong>
+                <p>捕獲、覇王、青炎、毒、汎用スキルのダメージを色分けし、斬撃、石化、毒、青炎、持ち駒へ飛ぶ演出を追加しました。</p>
+              </div>
             </div>
-            <div class="project-actions">
-              <a class="button primary" href="./assets/video/syogi-battle-demo.mp4" target="_blank" rel="noopener">実機映像を見る</a>
-              <a class="button secondary" href="https://github.com/atsushisaito2028/syogibattle" target="_blank" rel="noopener">GitHubを見る</a>
+            <div class="rulebook-preview">
+              <h4>ルールブックを追加</h4>
+              <p>
+                HP制、ターンの流れ、ダメージ処理、デッキ編成、配置テンプレート、スキル種別、成りと持ち駒、勝利条件をまとめました。
+                実装した仕様を後から確認しやすいよう、プレイヤー視点の順番で読める構成にしています。
+              </p>
             </div>
             <ul class="tags">
               <li>Unity 6</li>
@@ -375,9 +376,6 @@
               <li>デッキ構築</li>
               <li>UI / Effects</li>
             </ul>
-          </div>
-          <div class="mini-visual syogi-visual" aria-hidden="true">
-            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
           </div>
         </article>
 
