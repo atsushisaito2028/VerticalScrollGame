@@ -531,6 +531,7 @@ h4 {
   margin: 0;
 }
 
+.project-summary,
 .syogi-summary {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -538,6 +539,7 @@ h4 {
   margin: 22px 0 0;
 }
 
+.project-summary div,
 .syogi-summary div {
   min-height: 100%;
   padding: 16px;
@@ -546,6 +548,7 @@ h4 {
   border-radius: 8px;
 }
 
+.project-summary span,
 .syogi-summary span {
   display: inline-flex;
   margin-bottom: 12px;
@@ -554,6 +557,7 @@ h4 {
   font-weight: 900;
 }
 
+.project-summary strong,
 .syogi-summary strong {
   display: block;
   margin-bottom: 8px;
@@ -562,10 +566,15 @@ h4 {
   line-height: 1.55;
 }
 
+.project-summary p,
 .syogi-summary p {
   margin: 0;
   font-size: 14px;
   line-height: 1.75;
+}
+
+.project-summary + .note {
+  margin-top: 14px;
 }
 
 .rulebook-preview {
@@ -823,6 +832,22 @@ h4 {
   font-size: clamp(16px, 2.2vw, 24px);
 }
 
+.footer-credit {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.footer .footer-credit a {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .rulebook-page {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(247, 251, 255, 0.96)),
@@ -952,6 +977,7 @@ h4 {
     grid-template-columns: 1fr;
   }
 
+  .project-summary,
   .syogi-summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1030,6 +1056,7 @@ h4 {
     grid-template-columns: 1fr;
   }
 
+  .project-summary,
   .syogi-summary {
     grid-template-columns: 1fr;
   }

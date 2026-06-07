@@ -256,63 +256,60 @@
           </div>
         </article>
 
-        <article class="project-card project-card-large">
+        <article class="project-card project-card-showcase">
           <div class="project-index">03</div>
           <div class="project-body">
-            <p class="project-kicker">Unity / C# / Multiplayer</p>
-            <h3>Hex Frontier Online: オンライン開拓ボードゲームの実装</h3>
-            <p>
-              Unity 6000.4.7f1とC#で、資源生産、建設、交易、発展カードを組み合わせたオンライン対戦型ボードゲームを実装しています。
-              ポートフォリオ掲載にあたり、名称・素材・カード表現をオリジナルのSF開拓テーマに整理し、実機映像とルールを見られるようにしました。
-            </p>
-            <div class="deep-dive">
-              <div>
-                <h4>オンライン同期</h4>
+            <div class="showcase-layout">
+              <div class="showcase-copy">
+                <p class="project-kicker">Unity / C# / Multiplayer</p>
+                <h3>Hex Frontier Online: オンライン開拓ボードゲームの実装</h3>
                 <p>
-                  <strong>Photon PUN 2</strong>は、Unityでオンライン対戦を作るための通信ライブラリです。
-                  合言葉式ロビー、ルーム作成・入室、ホスト開始、盤面seed共有、ターン進行、サイコロ結果、資源獲得、
-                  開拓地・道路配置、トレード、カード処理をRPCで同期し、参加者ごとに盤面がずれないようにしました。
+                  Unity 6000.4.7f1とC#で、資源生産、建設、交易、発展カードを組み合わせたオンライン対戦型ボードゲームを実装しています。
+                  ポートフォリオ掲載にあたり、名称・素材・カード表現をオリジナルのSF開拓テーマに整理し、実機映像とルールを見られるようにしました。
                 </p>
+                <div class="project-actions showcase-actions">
+                  <a class="button primary" href="./assets/video/hex-frontier-online-demo.mp4" target="_blank" rel="noopener">実機映像を見る</a>
+                  <a class="button secondary" href="./hex-frontier-rulebook.html" target="_blank" rel="noopener">ルールを見る</a>
+                </div>
+              </div>
+              <div class="project-video showcase-video">
+                <video controls preload="metadata" poster="./assets/video/hex-frontier-online-poster.jpg">
+                  <source src="./assets/video/hex-frontier-online-demo.mp4" type="video/mp4" />
+                  お使いのブラウザでは動画を再生できません。
+                </video>
+              </div>
+            </div>
+            <div class="project-summary">
+              <div>
+                <span>01</span>
+                <strong>オンライン同期</strong>
+                <p>Photon PUN 2でロビー、ルーム、盤面seed、ターン、資源、建設、カード処理を同期し、参加者ごとの盤面ずれを防ぎました。</p>
               </div>
               <div>
-                <h4>UIと操作感</h4>
-                <p>
-                  初見でも現在の手番、サイコロ結果、資源、建設コスト、カード内容が追えるように、コスト表、デッキビューア、
-                  ツールチップ、5秒プレビュー、操作中のUIブロックを実装しました。クリック配置では、誤操作を減らすために
-                  入力可能な場面を制限しています。
-                </p>
+                <span>02</span>
+                <strong>UIと操作感</strong>
+                <p>手番、サイコロ結果、資源、建設コスト、カード内容を追いやすくし、操作できる場面を制限して誤操作を減らしました。</p>
               </div>
               <div>
-                <h4>設計上の工夫</h4>
-                <p>
-                  LobbyManager、BoardManager、TurnManager、ResourceManager、SettlementManager、RoadManager、
-                  DeckManagerなどに役割を分け、通信、盤面生成、ターン、資源、カードを分離しました。機能追加時に
-                  どこを直せばよいか追いやすい構造を意識しています。
-                </p>
+                <span>03</span>
+                <strong>ルールの見える化</strong>
+                <p>資源、建設、交易、発展カード、勝利条件をルールブックとして整理し、実機映像から遊び方まで確認できる導線を作りました。</p>
+              </div>
+              <div>
+                <span>04</span>
+                <strong>設計上の工夫</strong>
+                <p>通信、盤面生成、ターン、資源、道路、拠点、カードの責務を分け、機能追加時に追いやすい構造を意識しました。</p>
               </div>
             </div>
             <p class="note">
               もとの試作で使っていた既存作品由来の表現は、ポートフォリオ版ではオリジナル表現に置き換えています。
             </p>
-            <div class="project-video">
-              <video controls preload="metadata" poster="./assets/video/hex-frontier-online-poster.jpg">
-                <source src="./assets/video/hex-frontier-online-demo.mp4" type="video/mp4" />
-                お使いのブラウザでは動画を再生できません。
-              </video>
-            </div>
-            <div class="project-actions">
-              <a class="button primary" href="./assets/video/hex-frontier-online-demo.mp4" target="_blank" rel="noopener">実機映像を見る</a>
-              <a class="button secondary" href="./hex-frontier-rulebook.html" target="_blank" rel="noopener">ルールを見る</a>
-            </div>
             <ul class="tags">
               <li>Unity</li>
               <li>Photon PUN 2</li>
               <li>RPC同期</li>
               <li>UI設計</li>
             </ul>
-          </div>
-          <div class="mini-visual hex-visual" aria-hidden="true">
-            <i></i><i></i><i></i><i></i><i></i><i></i>
           </div>
         </article>
 
@@ -448,6 +445,7 @@
         <a href="mailto:atsushi.saito2028@gmail.com">atsushi.saito2028@gmail.com</a>
         <a href="https://github.com/atsushisaito2028/HexFrontierOnline" target="_blank" rel="noopener">GitHub: Hex Frontier Online</a>
         <a href="https://github.com/atsushisaito2028/syogibattle" target="_blank" rel="noopener">GitHub: 異世界将棋道場</a>
+        <p class="footer-credit">異世界将棋道場 BGM素材: <a href="https://amachamusic.chagasi.com/" target="_blank" rel="noopener">甘茶の音楽工房</a></p>
       </div>
     </footer>
 
