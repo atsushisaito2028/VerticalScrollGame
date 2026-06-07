@@ -611,6 +611,40 @@ h4 {
   background: var(--cyan);
 }
 
+.syogi-visual {
+  display: grid;
+  grid-template-columns: repeat(3, 58px);
+  align-content: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 24px;
+  background:
+    linear-gradient(135deg, rgba(244, 198, 64, 0.08), transparent 55%),
+    #14111c;
+}
+
+.syogi-visual i {
+  width: 58px;
+  height: 58px;
+  background: #d8a85a;
+  border: 1px solid rgba(255, 236, 178, 0.48);
+  box-shadow: inset 0 0 0 1px rgba(69, 39, 14, 0.28);
+}
+
+.syogi-visual i:nth-child(2n) {
+  background: #c78a43;
+}
+
+.syogi-visual i:nth-child(5) {
+  background: var(--amber);
+  box-shadow: 0 0 24px rgba(244, 198, 64, 0.45);
+}
+
+.syogi-visual i:nth-child(3),
+.syogi-visual i:nth-child(7) {
+  background: var(--cyan);
+}
+
 .ml-visual {
   display: flex;
   align-items: end;
