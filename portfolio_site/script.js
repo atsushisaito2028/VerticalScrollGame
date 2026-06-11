@@ -1,160 +1,277 @@
-const canvas = document.querySelector("#lab-canvas");
-const ctx = canvas.getContext("2d");
+/* ============================================================
+   Neuro Cyberspace — background & interactions
+   ============================================================ */
+document.documentElement.classList.add("js");
 
-let width = 0;
-let height = 0;
-let scale = 1;
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-function resize() {
-  scale = Math.min(window.devicePixelRatio || 1, 2);
-  width = window.innerWidth;
-  height = window.innerHeight;
-  canvas.width = Math.floor(width * scale);
-  canvas.height = Math.floor(height * scale);
-  canvas.style.width = `${width}px`;
-  canvas.style.height = `${height}px`;
-  ctx.setTransform(scale, 0, 0, scale, 0, 0);
-}
+/* ------------------------------------------------------------
+   1. Neural network background (canvas)
+   ------------------------------------------------------------ */
+const canvas = document.querySelector("#neural-canvas");
 
-function drawHex(cx, cy, radius, stroke, fill) {
-  ctx.beginPath();
-  for (let i = 0; i < 6; i += 1) {
-    const angle = (Math.PI / 3) * i - Math.PI / 6;
-    const x = cx + Math.cos(angle) * radius;
-    const y = cy + Math.sin(angle) * radius;
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
+if (canvas) {
+  const ctx = canvas.getContext("2d");
+  let width = 0;
+  let height = 0;
+  let nodes = [];
+  let pulses = [];
+  let rafId = null;
+  let lastTime = 0;
+
+  const LINK_DIST = 150;
+  const FRAME_MIN = 1000 / 40; // cap ~40fps
+
+  function resize() {
+    const scale = Math.min(window.devicePixelRatio || 1, 1.5);
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = Math.floor(width * scale);
+    canvas.height = Math.floor(height * scale);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    initNodes();
   }
-  ctx.closePath();
-  ctx.fillStyle = fill;
-  ctx.strokeStyle = stroke;
-  ctx.lineWidth = 1.4;
-  ctx.fill();
-  ctx.stroke();
-}
 
-function drawCircuit(time) {
-  const startX = width * 0.08;
-  const startY = height * 0.18;
-  ctx.strokeStyle = "rgba(0, 166, 214, 0.28)";
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  for (let i = 0; i < 7; i += 1) {
-    const x = startX + i * 86;
-    const y = startY + Math.sin(time * 0.0012 + i) * 20;
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
-    ctx.moveTo(x, y);
-    ctx.lineTo(x, y + 64 + (i % 2) * 24);
-    ctx.moveTo(x, y);
+  function initNodes() {
+    const count = Math.max(26, Math.min(80, Math.floor((width * height) / 26000)));
+    nodes = Array.from({ length: count }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.22,
+      vy: (Math.random() - 0.5) * 0.22,
+      r: 1 + Math.random() * 1.6,
+      hue: Math.random() < 0.78 ? "0, 229, 255" : "167, 139, 250",
+    }));
+    pulses = [];
   }
-  ctx.stroke();
 
-  for (let i = 0; i < 7; i += 1) {
-    const x = startX + i * 86;
-    const y = startY + Math.sin(time * 0.0012 + i) * 20;
-    ctx.fillStyle = i % 2 === 0 ? "rgba(112, 191, 68, 0.75)" : "rgba(245, 166, 35, 0.72)";
-    ctx.beginPath();
-    ctx.arc(x, y, 4.5, 0, Math.PI * 2);
-    ctx.fill();
-  }
-}
-
-function drawWaves(time) {
-  const lines = [
-    ["rgba(0, 166, 214, 0.48)", 0.52, 30, 0],
-    ["rgba(236, 95, 103, 0.38)", 0.6, 24, 1.7],
-    ["rgba(112, 191, 68, 0.34)", 0.68, 18, 2.4],
-  ];
-
-  lines.forEach(([stroke, yRatio, amp, phase]) => {
-    ctx.beginPath();
-    ctx.strokeStyle = stroke;
-    ctx.lineWidth = 2.4;
-    for (let x = -20; x <= width + 20; x += 12) {
-      const baseY = height * yRatio;
-      const y =
-        baseY +
-        Math.sin(x * 0.017 + time * 0.002 + phase) * amp +
-        Math.sin(x * 0.043 + time * 0.0015) * (amp * 0.32);
-      if (x === -20) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
+  function spawnPulse() {
+    if (pulses.length > 5 || nodes.length < 2) return;
+    const a = nodes[Math.floor(Math.random() * nodes.length)];
+    let best = null;
+    let bestD = Infinity;
+    for (const b of nodes) {
+      if (b === a) continue;
+      const d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (d < bestD && d < LINK_DIST * 1.2) {
+        bestD = d;
+        best = b;
+      }
     }
-    ctx.stroke();
+    if (best) pulses.push({ a, b: best, t: 0, speed: 0.012 + Math.random() * 0.012 });
+  }
+
+  function drawEEG(time) {
+    const rows = [
+      ["rgba(0, 229, 255, 0.14)", 0.8, 16, 0],
+      ["rgba(167, 139, 250, 0.1)", 0.88, 12, 2.2],
+    ];
+    rows.forEach(([stroke, yRatio, amp, phase]) => {
+      ctx.beginPath();
+      ctx.strokeStyle = stroke;
+      ctx.lineWidth = 1.6;
+      for (let x = -10; x <= width + 10; x += 10) {
+        const baseY = height * yRatio;
+        const y =
+          baseY +
+          Math.sin(x * 0.016 + time * 0.0011 + phase) * amp +
+          Math.sin(x * 0.041 + time * 0.0007) * (amp * 0.4);
+        if (x === -10) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    });
+  }
+
+  function drawFrame(time) {
+    ctx.clearRect(0, 0, width, height);
+
+    // links
+    for (let i = 0; i < nodes.length; i += 1) {
+      const a = nodes[i];
+      for (let j = i + 1; j < nodes.length; j += 1) {
+        const b = nodes[j];
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        const d = Math.hypot(dx, dy);
+        if (d < LINK_DIST) {
+          const o = (1 - d / LINK_DIST) * 0.16;
+          ctx.strokeStyle = `rgba(0, 229, 255, ${o})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // nodes
+    for (const n of nodes) {
+      ctx.fillStyle = `rgba(${n.hue}, 0.5)`;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // signal pulses (synapse firing)
+    for (const p of pulses) {
+      const x = p.a.x + (p.b.x - p.a.x) * p.t;
+      const y = p.a.y + (p.b.y - p.a.y) * p.t;
+      const fade = Math.sin(p.t * Math.PI);
+      const grad = ctx.createRadialGradient(x, y, 0, x, y, 7);
+      grad.addColorStop(0, `rgba(0, 229, 255, ${0.85 * fade})`);
+      grad.addColorStop(1, "rgba(0, 229, 255, 0)");
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(x, y, 7, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    drawEEG(time);
+  }
+
+  function step(time) {
+    rafId = requestAnimationFrame(step);
+    if (time - lastTime < FRAME_MIN) return;
+    lastTime = time;
+
+    for (const n of nodes) {
+      n.x += n.vx;
+      n.y += n.vy;
+      if (n.x < -20) n.x = width + 20;
+      if (n.x > width + 20) n.x = -20;
+      if (n.y < -20) n.y = height + 20;
+      if (n.y > height + 20) n.y = -20;
+    }
+
+    pulses = pulses.filter((p) => {
+      p.t += p.speed * 16;
+      return p.t < 1;
+    });
+    if (Math.random() < 0.03) spawnPulse();
+
+    drawFrame(time);
+  }
+
+  function start() {
+    if (rafId === null && !prefersReducedMotion) rafId = requestAnimationFrame(step);
+  }
+
+  function stop() {
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+  }
+
+  resize();
+  window.addEventListener("resize", resize);
+
+  if (prefersReducedMotion) {
+    drawFrame(0); // single static frame
+  } else {
+    start();
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stop();
+      else start();
+    });
+  }
+}
+
+/* ------------------------------------------------------------
+   2. Scroll progress bar
+   ------------------------------------------------------------ */
+const progressBar = document.querySelector("#scroll-progress-bar");
+
+if (progressBar) {
+  let ticking = false;
+  const updateProgress = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const ratio = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+    progressBar.style.width = `${ratio * 100}%`;
+    ticking = false;
+  };
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateProgress);
+      }
+    },
+    { passive: true },
+  );
+  updateProgress();
+}
+
+/* ------------------------------------------------------------
+   3. Seamless skill marquee (duplicate track once)
+   ------------------------------------------------------------ */
+const track = document.querySelector("#ticker-track");
+
+if (track && !prefersReducedMotion) {
+  track.innerHTML += track.innerHTML;
+}
+
+/* ------------------------------------------------------------
+   4. Reveal on scroll (with sibling stagger)
+   ------------------------------------------------------------ */
+const revealTargets = document.querySelectorAll("[data-reveal]");
+
+if ("IntersectionObserver" in window && revealTargets.length > 0 && !prefersReducedMotion) {
+  const groups = new Map();
+  revealTargets.forEach((el) => {
+    const parent = el.parentElement;
+    const index = groups.get(parent) || 0;
+    el.style.transitionDelay = `${Math.min(index, 5) * 90}ms`;
+    groups.set(parent, index + 1);
+  });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+  );
+
+  revealTargets.forEach((el) => observer.observe(el));
+} else {
+  revealTargets.forEach((el) => el.classList.add("is-visible"));
+}
+
+/* ------------------------------------------------------------
+   5. Mobile nav (hamburger)
+   ------------------------------------------------------------ */
+const header = document.querySelector("#site-header");
+const navToggle = document.querySelector("#nav-toggle");
+const primaryNav = document.querySelector("#primary-nav");
+
+if (header && navToggle && primaryNav) {
+  navToggle.addEventListener("click", () => {
+    const open = header.classList.toggle("nav-open");
+    navToggle.setAttribute("aria-expanded", String(open));
+  });
+
+  primaryNav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      header.classList.remove("nav-open");
+      navToggle.setAttribute("aria-expanded", "false");
+    });
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && header.classList.contains("nav-open")) {
+      header.classList.remove("nav-open");
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.focus();
+    }
   });
 }
-
-function drawHexField(time) {
-  const radius = Math.max(24, Math.min(42, width / 34));
-  const spacingX = radius * 1.75;
-  const spacingY = radius * 1.52;
-  const originX = width * 0.62;
-  const originY = height * 0.22;
-  const colors = [
-    "rgba(0, 166, 214, 0.12)",
-    "rgba(245, 166, 35, 0.14)",
-    "rgba(112, 191, 68, 0.12)",
-  ];
-
-  for (let row = 0; row < 5; row += 1) {
-    for (let col = 0; col < 6; col += 1) {
-      const pulse = Math.sin(time * 0.0014 + row * 0.8 + col * 0.5) * 0.5 + 0.5;
-      const x = originX + col * spacingX + (row % 2) * (spacingX / 2);
-      const y = originY + row * spacingY;
-      drawHex(
-        x,
-        y,
-        radius,
-        `rgba(17, 24, 39, ${0.08 + pulse * 0.08})`,
-        colors[(row + col) % colors.length],
-      );
-    }
-  }
-}
-
-function drawSensor(time) {
-  const x = width * 0.74;
-  const y = height * 0.77;
-  const w = Math.min(320, width * 0.28);
-  const h = 56;
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.rotate(-0.12);
-  ctx.fillStyle = "rgba(255, 255, 255, 0.68)";
-  ctx.strokeStyle = "rgba(17, 24, 39, 0.12)";
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.roundRect(-w / 2, -h / 2, w, h, 14);
-  ctx.fill();
-  ctx.stroke();
-  ctx.fillStyle = "rgba(245, 166, 35, 0.72)";
-  ctx.fillRect(-w * 0.38, -6, w * 0.3, 12);
-  ctx.fillRect(w * 0.08, -6, w * 0.3, 12);
-  const spark = Math.sin(time * 0.006) * 0.5 + 0.5;
-  ctx.strokeStyle = `rgba(0, 166, 214, ${0.28 + spark * 0.55})`;
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(-w * 0.07, 0);
-  ctx.bezierCurveTo(-18, -22, 18, 22, w * 0.07, 0);
-  ctx.stroke();
-  ctx.restore();
-}
-
-function draw(time = 0) {
-  ctx.clearRect(0, 0, width, height);
-  ctx.fillStyle = "rgba(247, 251, 255, 1)";
-  ctx.fillRect(0, 0, width, height);
-
-  ctx.globalCompositeOperation = "multiply";
-  drawHexField(time);
-  drawCircuit(time);
-  drawWaves(time);
-  drawSensor(time);
-  ctx.globalCompositeOperation = "source-over";
-
-  requestAnimationFrame(draw);
-}
-
-resize();
-draw();
-window.addEventListener("resize", resize);
